@@ -45,7 +45,7 @@ class MySetting extends StatelessWidget {
                             children: <Widget>[
                               Padding(
                                 child: Text(
-                                  '${_currentUser.newCurrentUser != null ? "您的名字:" + _currentUser.newCurrentUser.self_name : "请先点击登录"}',
+                                  '${_currentUser.newCurrentUser != null ? "孩子名字:" + _currentUser.newCurrentUser.self_name : "请先点击登录"}',
                                   textAlign: TextAlign.left,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -55,7 +55,7 @@ class MySetting extends StatelessWidget {
                               ),
                               Padding(
                                 child: Text(
-                                  '${_currentUser.newCurrentUser != null ? '孩子名字:' + _currentUser.newCurrentUser.childname : "暂无信息"}',
+                                  '${_currentUser.newCurrentUser != null ? '手机号码:' + _currentUser.newCurrentUser.phone : "暂无信息"}',
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,

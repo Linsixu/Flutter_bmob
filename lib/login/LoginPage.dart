@@ -39,7 +39,9 @@ class _FormTestState extends State<LoginPage> {
                   decoration: InputDecoration(
                       labelText: "用户名",
                       hintText: "手机或者邮箱",
-                      icon: Icon(Icons.person, size: 30)),
+                      labelStyle: _generateTextStyle(),
+                      hintStyle: _generateTextStyle(),
+                      icon: Icon(Icons.person, size: 25)),
                   // 校验用户名
                   validator: (v) {
                     return v.trim().length > 0 ? null : "用户名不能为空";
@@ -49,7 +51,9 @@ class _FormTestState extends State<LoginPage> {
                   decoration: InputDecoration(
                       labelText: "密码",
                       hintText: "您的登录密码",
-                      icon: Icon(Icons.lock, size: 30)),
+                      labelStyle: _generateTextStyle(),
+                      hintStyle: _generateTextStyle(),
+                      icon: Icon(Icons.lock, size: 25)),
                   obscureText: true,
                   //校验密码
                   validator: (v) {
@@ -108,5 +112,9 @@ class _FormTestState extends State<LoginPage> {
         ),
       )),
     );
+  }
+
+  TextStyle _generateTextStyle() {
+    return TextStyle(fontSize: 12);
   }
 }

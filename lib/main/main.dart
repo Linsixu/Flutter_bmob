@@ -6,11 +6,13 @@ import 'package:flutter_bmob/model/LoginUserModel.dart';
 import 'package:flutter_bmob/student/student_class.dart';
 import 'package:flutter_bmob/my/my_setting.dart';
 import 'package:flutter_bmob/teacher/teacher_class.dart';
+import 'package:flutter_bmob/utils/share_preferences.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   final currentUser = LoginUserModel();
-  Bmob.init("6190525c2d38ba9be4369cbd1ad8c9da", "f5ba935995568ab48d07973c8b175299");
+  Bmob.init(
+      "6190525c2d38ba9be4369cbd1ad8c9da", "f5ba935995568ab48d07973c8b175299");
   runApp(Provider<BmobUser>.value(
       value: null,
       child: ChangeNotifierProvider.value(
@@ -18,13 +20,13 @@ void main() {
         child: MyApp(),
       )));
 }
-
 /// This Widget is the main application widget.
 class MyApp extends StatelessWidget {
   static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
+    LocalDataHelper().getShareInstance();
     return MaterialApp(
       title: _title,
       home: MyStatefulWidget(),
