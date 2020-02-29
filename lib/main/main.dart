@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocalDataHelper().getShareInstance();
+    LocalDataHelper.getShareInstance();
     return MaterialApp(
       title: _title,
       home: MyStatefulWidget(),

@@ -67,7 +67,7 @@ class LocalDataHelper {
     });
   }
 
-  Future<SharedPreferences> getShareInstance() async {
+  static Future<SharedPreferences> getShareInstance() async {
     if (sharedPreferences == null) {
       sharedPreferences = await SharedPreferences.getInstance();
     } else {
@@ -75,7 +75,7 @@ class LocalDataHelper {
     }
   }
 
-  Future<bool> saveUserMessage(MyBmobUser user) async {
+  static Future<bool> saveUserMessage(MyBmobUser user) async {
     getShareInstance().then((f) {
       f.setString(ID_KEY, user.objectId);
       f.setString(NAME_KEY, user.username);
@@ -87,7 +87,7 @@ class LocalDataHelper {
     });
   }
 
-  clearCurrentUser() {
+  static clearCurrentUser() {
     getShareInstance().then((f) {
       f.remove(ID_KEY);
       f.remove(NAME_KEY);
@@ -98,19 +98,19 @@ class LocalDataHelper {
     });
   }
 
-  MyBmobUser getCurrentUser() {
+  static Future<MyBmobUser> getCurrentUser() async {
     MyBmobUser myBmobUser;
-    getShareInstance().then((f) {
+    await getShareInstance().then((f) {
       String objectId = f.getString(ID_KEY);
       if (objectId.isNotEmpty) {
         myBmobUser = MyBmobUser();
         myBmobUser.username = f.getString(NAME_KEY);
         myBmobUser.password = f.getString(PSD_KEY);
         myBmobUser.isTeacher = f.getBool(VERTICAL_KEY);
-        myBmobUser.childname = f.getString(CHILD_NAME_KEY);
+        myBmobUser.self_name = myBmobUser.childname = f.getString(CHILD_NAME_KEY);
         myBmobUser.phone = f.getString(PHONE_KEY);
       }
-      return myBmobUser;
     });
+    return myBmobUser;
   }
 }

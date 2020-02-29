@@ -16,7 +16,8 @@ class LoginUserModel with ChangeNotifier {
     newCurrentUser = null;
   }
 
-  Future<bool> login(BuildContext context, String userName, String password) async {
+  Future<bool> login(
+      BuildContext context, String userName, String password) async {
     String errorMsg;
     MyBmobUser currentUser = MyBmobUser();
     currentUser.username = userName;
@@ -24,7 +25,7 @@ class LoginUserModel with ChangeNotifier {
     await currentUser.login().then((MyBmobUser bmobUser) {
       newCurrentUser = bmobUser;
       notifyListeners();
-      Future<bool> result = LocalDataHelper().saveUserMessage(newCurrentUser);
+      LocalDataHelper.saveUserMessage(newCurrentUser);
       showToast("登录成功");
     }).catchError((e) {
       currentUser = null;
@@ -67,5 +68,14 @@ class LoginUserModel with ChangeNotifier {
         break;
     }
     return error;
+  }
+
+  getLocalUser() {
+    LocalDataHelper.getCurrentUser().then((user) {
+      if (user != null) {
+        newCurrentUser = user;
+        notifyListeners();
+      }
+    });
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bmob/login/LoginPage.dart';
 import 'package:flutter_bmob/model/LoginUserModel.dart';
+import 'package:flutter_bmob/model/MyBmobUser.dart';
+import 'package:flutter_bmob/utils/share_preferences.dart';
 import 'package:provider/provider.dart';
 
 final List<String> text = <String>["我的信息", "我的课程", "发布课程", "我的设置", "退出登录"];
@@ -18,6 +20,7 @@ class MySetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _currentUser = Provider.of<LoginUserModel>(context);
+    _currentUser.getLocalUser();
     // TODO: implement build
     return Scaffold(
         body: ListView.separated(
@@ -26,6 +29,7 @@ class MySetting extends StatelessWidget {
               if (index == 0) {
                 return new GestureDetector(
                   onTap: () {
+                    if (_currentUser.newCurrentUser != null) return;
                     Navigator.push(
                         context,
                         MaterialPageRoute(
