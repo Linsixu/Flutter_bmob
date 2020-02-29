@@ -1,6 +1,7 @@
 import 'package:flutter_bmob/model/MyBmobUser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final String ID_KEY = "objectId";
 final String NAME_KEY = "username";
 final String PSD_KEY = "password";
 final String VERTICAL_KEY = "vertical";
@@ -74,18 +75,21 @@ class LocalDataHelper {
     }
   }
 
-  Future saveUserMessage(MyBmobUser user) async {
+  Future<bool> saveUserMessage(MyBmobUser user) async {
     getShareInstance().then((f) {
+      f.setString(ID_KEY, user.objectId);
       f.setString(NAME_KEY, user.username);
       f.setString(PSD_KEY, user.password);
       f.setBool(VERTICAL_KEY, user.isTeacher);
       f.setString(PHONE_KEY, user.phone);
       f.setString(CHILD_NAME_KEY, user.childname);
+      return true;
     });
   }
 
   clearCurrentUser() {
     getShareInstance().then((f) {
+      f.remove(ID_KEY);
       f.remove(NAME_KEY);
       f.remove(PSD_KEY);
       f.remove(VERTICAL_KEY);
@@ -97,10 +101,10 @@ class LocalDataHelper {
   MyBmobUser getCurrentUser() {
     MyBmobUser myBmobUser;
     getShareInstance().then((f) {
-      String username = f.getString(NAME_KEY);
-      if (username.isNotEmpty) {
+      String objectId = f.getString(ID_KEY);
+      if (objectId.isNotEmpty) {
         myBmobUser = MyBmobUser();
-        myBmobUser.username = username;
+        myBmobUser.username = f.getString(NAME_KEY);
         myBmobUser.password = f.getString(PSD_KEY);
         myBmobUser.isTeacher = f.getBool(VERTICAL_KEY);
         myBmobUser.childname = f.getString(CHILD_NAME_KEY);

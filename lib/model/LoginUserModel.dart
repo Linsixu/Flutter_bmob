@@ -1,10 +1,7 @@
-import 'package:data_plugin/bmob/bmob.dart';
 import 'package:data_plugin/bmob/response/bmob_error.dart';
 import 'package:data_plugin/bmob/response/bmob_registered.dart';
-import 'package:data_plugin/bmob/table/bmob_user.dart';
-import 'package:data_plugin/utils/dialog_util.dart';
-import 'package:flutter_bmob/model/MyBmobUser.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bmob/model/MyBmobUser.dart';
 import 'package:flutter_bmob/utils/share_preferences.dart';
 import 'package:flutter_bmob/utils/toast_helper.dart';
 
@@ -19,28 +16,28 @@ class LoginUserModel with ChangeNotifier {
     newCurrentUser = null;
   }
 
-  login(BuildContext context, String userName, String password) {
+  Future<bool> login(BuildContext context, String userName, String password) async {
+    String errorMsg;
     MyBmobUser currentUser = MyBmobUser();
     currentUser.username = userName;
     currentUser.password = password;
-    currentUser.login().then((MyBmobUser bmobUser) {
+    await currentUser.login().then((MyBmobUser bmobUser) {
       newCurrentUser = bmobUser;
       notifyListeners();
-      Future result = LocalDataHelper().saveUserMessage(newCurrentUser);
-      result.then((Null){
-        Navigator.pop(context);
-      });
-//      Navigator.pop(context);
+      Future<bool> result = LocalDataHelper().saveUserMessage(newCurrentUser);
+      showToast("登录成功");
     }).catchError((e) {
       currentUser = null;
-      showToast(_getErrorMessage(BmobError
-          .convert(e)
-          .code));
+      errorMsg = _getErrorMessage(BmobError.convert(e).code);
+      showToast(errorMsg);
+    }).whenComplete(() {
+      Navigator.pop(context);
     });
+    return !(errorMsg != null);
   }
 
-  registerParentModel(String username, String psd, String childName,
-      String phone) {
+  registerParentModel(
+      String username, String psd, String childName, String phone) {
     MyBmobUser registerUser = MyBmobUser();
     registerUser.username = username;
     registerUser.password = psd;
@@ -53,9 +50,7 @@ class LoginUserModel with ChangeNotifier {
       newCurrentUser = registerUser;
       notifyListeners();
     }).catchError((e) {
-      showToast(_getErrorMessage(BmobError
-          .convert(e)
-          .code));
+      showToast(_getErrorMessage(BmobError.convert(e).code));
     });
   }
 
