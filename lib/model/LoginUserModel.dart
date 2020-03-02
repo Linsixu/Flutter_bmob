@@ -23,10 +23,10 @@ class LoginUserModel with ChangeNotifier {
     currentUser.username = userName;
     currentUser.password = password;
     await currentUser.login().then((MyBmobUser bmobUser) {
-      newCurrentUser = bmobUser;
-      notifyListeners();
-      LocalDataHelper.saveUserMessage(newCurrentUser);
       showToast("登录成功");
+      newCurrentUser = bmobUser;
+      LocalDataHelper.saveUserMessage(newCurrentUser);
+      notifyListeners();
     }).catchError((e) {
       currentUser = null;
       errorMsg = _getErrorMessage(BmobError.convert(e).code);
@@ -49,6 +49,7 @@ class LoginUserModel with ChangeNotifier {
     registerUser.register().then((BmobRegistered data) {
       showToast("注册成功");
       newCurrentUser = registerUser;
+      LocalDataHelper.saveUserMessage(newCurrentUser);
       notifyListeners();
     }).catchError((e) {
       showToast(_getErrorMessage(BmobError.convert(e).code));
